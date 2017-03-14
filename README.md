@@ -1,14 +1,19 @@
-# ASP.NET Core Starter Kit &nbsp; ![Status](https://img.shields.io/badge/status-early%20preview-orange.svg?style=flat-square) [![Online Chat](http://img.shields.io/badge/chat-%23aspnet--starter--kit-blue.svg?style=flat-square)](https://gitter.im/kriasoft/aspnet-starter-kit) [![Tips](https://img.shields.io/badge/donate-PayPal-blue.svg?style=flat-square)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DSV6K6LZU2VGW)
+# ASP.NET Core Starter Kit &nbsp; <a href="https://github.com/kriasoft/aspnet-starter-kit/stargazers"><img src="https://img.shields.io/github/stars/kriasoft/aspnet-starter-kit.svg?style=social&label=Star&maxAge=3600" alt="" height="20"></a> <a href="https://twitter.com/dotnetreact"><img src="https://img.shields.io/twitter/follow/dotnetreact.svg?style=social&label=Follow&maxAge=3600" alt="" height="20"></a> <a href="https://gitter.im/kriasoft/aspnet-starter-kit"><img src="https://img.shields.io/badge/chat-online-green.svg?style=social&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAQAAAC1QeVaAAAABGdBTUEAALGPC%2FxhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA%2F4ePzL8AAAAJcEhZcwAADE4AAAxOAX93jCMAAAAHdElNRQfgCQEGNCoLIPKlAAAA00lEQVQY023QsSuEcRjA8c%2BPy%2BJwkzt1R%2FEPqNuUkpDB33DFbjNYFFYzZSV%2FgfWKySiLxUBew7HoOpLjrZ%2Fh7erwfp%2FxMzw9T5A1ZkbZt8Sjrr6Grbvw4l3HgzPzBnpUcqgr9s2zhpDhrq9fFEVP6hkm%2FyiK9qFgQl5VC9oFLbUcTKyYzd%2BZWHalS8nRH25p2JbqwLgbUerDm3snVm1pi04LgjlTXh1rKkqVbVoy5NxOULUh1XQtWtRQN6ri05pLQu8bCIoqpu25c2Ak5F45aFLN7Q%2BBul12FZqKDAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNi0wOS0wMVQwNjo1Mjo0Mi0wNDowMOcKwTgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTYtMDktMDFUMDY6NTI6NDItMDQ6MDCWV3mEAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm%2B48GgAAAABJRU5ErkJggg%3D%3D&maxAge=86400" alt="" height="20"></a>
 
-> [ASP.NET Core Starter Kit](https://github.com/kriasoft/aspnet-starter-kit) is an opinionated
-> boilerplate for web development based on [.NET Core](http://dotnet.github.io/),
-> [Kestrel](https://github.com/aspnet/KestrelHttpServer), [GraphQL](http://graphql.org/) on the
-> backend and [Babel](http://babeljs.io/), [Webpack](https://webpack.github.io/),
-> [React](https://facebook.github.io/react) and [Redux](http://redux.js.org/) on the frontend.
-> This boilerplate comes in both [C#](https://github.com/kriasoft/aspnet-starter-kit) and
-> [F#](https://github.com/kriasoft/fsharp-starter-kit) flavors.
+> [ASP.NET Core Starter Kit](https://github.com/kriasoft/aspnet-starter-kit) is a real-world
+> boilerplate and tooling for creating [single-page web applications](https://en.wikipedia.org/wiki/Single-page_application)
+> (SPA) oriented towards [progressive enhancement](https://en.wikipedia.org/wiki/Progressive_enhancement)
+> design, cross-platform compatability and component-based UI architecture. It is built upon best of
+> breed technologies including [.NET Core](https://dot.net/core), [Kestrel](https://github.com/aspnet/KestrelHttpServer),
+> [EF Core](https://ef.readthedocs.io/en/latest/), [Babel](http://babeljs.io/), [Webpack](https://webpack.github.io/),
+> [React](https://facebook.github.io/react), [Redux](http://redux.js.org/), [CSS Modules](https://github.com/css-modules/css-modules),
+> [React Hot Loader](http://gaearon.github.io/react-hot-loader/) and more. This boilerplate comes in
+> both [C#](https://github.com/kriasoft/aspnet-starter-kit) and [F#](https://github.com/kriasoft/fsharp-starter-kit) flavors.
 
-**The work is being sponsored by [Rollbar](https://rollbar.com/?utm_source=reactstartkit(github)&utm_medium=link&utm_campaign=reactstartkit(github)) and [Localize](https://localizejs.com/?cid=802&utm_source=rsk):**
+**See** [demo](https://aspnet-core.azurewebsites.net), [docs](docs) &nbsp;|&nbsp; **Follow us** on
+[Gitter](https://gitter.im/kriasoft/aspnet-starter-kit) or [Twitter](https://twitter.com/dotnetreact)
+&nbsp;|&nbsp; **Learn** [React.js, ES6 and ASP.NET Core](#learn-reactjs-es6-and-aspnet-core)
+&nbsp;|&nbsp; **Visit our sponsors**:
 
 <a href="https://rollbar.com/?utm_source=reactstartkit(github)&utm_medium=link&utm_campaign=reactstartkit(github)"><img src="https://koistya.github.io/files/rollbar-x64.png" alt"Rollbar" width="235" height="64"></a>
 <a href="https://localizejs.com/?cid=802&utm_source=rsk"><img src="https://koistya.github.io/files/localize-x64.png" alt="Localize" width="291" height="64"></a>
@@ -16,16 +21,16 @@
 
 ### Features
 
-&nbsp; &nbsp; ✓ Component-based front-end development via [Webpack](https://webpack.github.io/), [CSS Modules](https://github.com/css-modules/css-modules) and [React](https://facebook.github.io/react) (see [`tools/webpack.config.js`](webpack.config.js))<br>
+&nbsp; &nbsp; ✓ Component-based front-end development via [Webpack](https://webpack.github.io/), [CSS Modules](https://github.com/css-modules/css-modules) and [React](https://facebook.github.io/react) (see [`webpack.config.js`](webpack.config.js))<br>
 &nbsp; &nbsp; ✓ Modern JavaScript syntax ([ES2015](http://babeljs.io/docs/learn-es2015/)+) via [Babel](http://babeljs.io/); modern CSS syntax (CSS3+) via [PostCSS](https://github.com/postcss/postcss)<br>
-&nbsp; &nbsp; ✓ Application state management via [Redux](http://redux.js.org/) (see [`client/core/store.js`](client/core/store.js))<br>
+&nbsp; &nbsp; ✓ Application state management via [Redux](http://redux.js.org/) (see [`client/store.js`](client/store.js))<br>
 &nbsp; &nbsp; ✓ Universal cross-stack routing and navigation via [`path-to-regexp`](https://github.com/pillarjs/path-to-regexp) and [`history`](https://github.com/ReactJSTraining/history) (see [`client/routes.json`](client/routes.json))<br>
 &nbsp; &nbsp; ✓ [Code-splitting](https://github.com/webpack/docs/wiki/code-splitting) and async chunk loading with [Webpack](https://webpack.github.io/) and [ES6 System.import()](http://www.2ality.com/2014/09/es6-modules-final.html)<br>
-&nbsp; &nbsp; ✓ Hot Module Replacement ([HMR](https://webpack.github.io/docs/hot-module-replacement.html)) /w [React Hot Loader](http://gaearon.github.io/react-hot-loader/) (coming soon)<br>
+&nbsp; &nbsp; ✓ Hot Module Replacement ([HMR](https://webpack.github.io/docs/hot-module-replacement.html)) /w [React Hot Loader](http://gaearon.github.io/react-hot-loader/)<br>
 &nbsp; &nbsp; ✓ Lightweight build automation with plain JavaScript (see [`run.js`](run.js))<br>
-&nbsp; &nbsp; ✓ Cross-device testing with [Browsersync](https://browsersync.io/) (coming soon)<br>
+&nbsp; &nbsp; ✓ Cross-device testing with [Browsersync](https://browsersync.io/)<br>
 &nbsp; &nbsp; ✓ Git-based deployment to [Azure App Service](https://azure.microsoft.com/services/app-service/) (see [`run.js/publish`](run.js))<br>
-&nbsp; &nbsp; ✓ 24/7 community support on [Gitter](https://gitter.im/kriasoft/aspnet-starter-kit) or [StackOverflow](http://stackoverflow.com/questions/tagged/aspnet-starter-kit); customization requests on [Codementor](https://www.codementor.io/koistya)<br>
+&nbsp; &nbsp; ✓ **24/7** community support on [Gitter](https://gitter.im/kriasoft/aspnet-starter-kit) or [StackOverflow](http://stackoverflow.com/questions/tagged/aspnet-starter-kit); consulting and customization requests on [Codementor](https://www.codementor.io/koistya)<br>
 
 
 ### Directory Layout
@@ -44,7 +49,10 @@
 │   ├── routes.json             # The list of application routes
 │   └── store.js                # Application state manager (Redux)
 ├── /client.test/               # Unit and integration tests for the frontend app
+├── /docs/                      # Documentation to the project
 ├── /public/                    # Static files such as favicon.ico etc.
+│   ├── robots.txt              # Instructions for search engine crawlers
+│   └── ...                     # etc.
 ├── /server/                    # Web server and data API (backend)
 │   ├── /Controllers/           # ASP.NET Web API and MVC controllers
 │   ├── /Models/                # Entity Framework models (entities)
@@ -64,13 +72,13 @@
 
 * OS X, Windows or Linux
 * [Node.js](https://nodejs.org) v6 or newer
-* [.NET Core SDK](https://www.microsoft.com/net/core)
-* [Visual Studio Code](https://code.visualstudio.com/) with [C# extension](https://github.com/OmniSharp/omnisharp-vscode)
+* [.NET Core](https://www.microsoft.com/net/core) and [.NET Core SDK](https://www.microsoft.com/net/core)
+* [Visual Studio Code](https://code.visualstudio.com/) with [C# extension](https://github.com/OmniSharp/omnisharp-vscode) (or Visual Studio 2015 or newer)
 
 
 ### Getting Started
 
-`1`. Clone the latest version of **ASP.NET Core Starter Kit** on your local machine by running:
+**Step 1**. Clone the latest version of **ASP.NET Core Starter Kit** on your local machine by running:
 
 ```shell
 $ git clone -o aspnet-starter-kit -b master --single-branch \
@@ -86,21 +94,23 @@ $ npm install -g generator-aspnetcore
 $ yo aspnetcore
 ```
 
-`2`. Install project dependencies listed in [`project.json`](server/project.json) and
+**Step 2**. Install project dependencies listed in [`project.json`](server/project.json) and
 [`package.json`](package.json) files: 
 
 ```shell
 $ npm install                   # Install both Node.js and .NET Core dependencies
 ```
 
-`3`. Finally, launch the web app:
+**Step 3**. Finally, launch your web app:
 
 ```shell
-$ npm start                     # Compile and lanch the app, same as running: node run
+$ node run                      # Compile and lanch the app, same as running: npm start
 ```
 
 The app should become available at [http://localhost:5000/](http://localhost:5000/).
-See [`run.js`](run.js) for other available commands such as `npm run build`, `npm run publish` etc.
+See [`run.js`](run.js) for other available commands such as `node run build`, `node run publish` etc.
+You can also run your app in a release (production) mode by running `node run --release`, or without
+Hot Module Replacement (HMR) by running `node run --no-hmr`.
 
 
 ### How to Deploy
@@ -112,7 +122,7 @@ Web App into [`run.js/publish`](run.js) file. Finally, whenever you need to comp
 app into a distributable format and upload that to Windows Azure App Service, simply run:
 
 ```shell
-$ npm run publish                # Same as running: node run publish --release
+$ node run publish              # Same as running: npm run publish
 ```
 
 ### How to Update
@@ -141,47 +151,20 @@ participate in discussions, upvote or downvote the issues you like or dislike, s
 requests](CONTRIBUTING.md#pull-requests).
 
 
-### Learn More
+### Learn React.js, ES6 and ASP.NET Core
 
-
-* **General**
-  * [.NET Core Documentation](https://dotnet.github.io/docs/) (core concepts: CoreFX, CoreCLR, Roslyn, .NET CLI tools etc.)
-  * [ASP.NET Core Documentation](https://docs.asp.net/en/latest/) (MVC, Razor, SignalR, Identity, routing, localization, caching etc.)
-  * [Entity Framework Core Documenation](https://docs.efproject.net/en/latest/) (providers, models, migrations, EF CLI tools etc.)
-  * [Facebook React Documentation](https://facebook.github.io/react/) ([getting started](https://facebook.github.io/react/docs/getting-started.html),
-    [thinking in React](https://facebook.github.io/react/docs/thinking-in-react.html), [top-level API](https://facebook.github.io/react/docs/top-level-api.html),
-    [component API](https://facebook.github.io/react/docs/component-api.html) etc.)
-* **Hosting**
-  * [Running ASP.NET Core applications with IIS and Antares (Azure Web Apps)](https://blog.3d-logic.com/2016/06/08/running-asp-net-core-applications-with-iis-and-antares/) by [Pawel Kadluczka](https://blog.3d-logic.com)
-  * [How to set up ASP.NET Core DataProtection in a Web Farm](http://www.paraesthesia.com/archive/2016/06/15/set-up-asp-net-dataprotection-in-a-farm/) by [Travis Illig](http://www.paraesthesia.com/)
-* **Books**
-  <table width="100%">
-    <tr>
-      <td width="185">
-        <a href="http://amzn.to/25J77RT">
-          <img src="http://ecx.images-amazon.com/images/I/51PoyFDMopL._SX150.jpg" width="150" height="185" alt="C# 6 and .NET Core 1.0: Modern Cross-Platform Development" />
-        </a>
-      </td>
-      <td>
-        <p>
-          <strong><a href="http://amzn.to/25J77RT">C# 6 and .NET Core 1.0: Modern Cross-Platform Development</a></strong><br />
-          <sup>by Mark J. Price (Mar 2016)</sup>
-        </p>
-        <p>
-          In this book you will learn how to build cross-platform applications using C# 6 and .NET
-          Core 1.0; how to build professional web applications with ASP.NET Core 1.0; how to improve
-          your application's performance using multitasking; learn Entity Framework Core 1.0 and
-          Code-First development approach; master object-oriented programming with C#; familiarize
-          yourself with cross-device app development using the Universal Windows Platform and XAML;
-          query and manipulate data using LINQ; protect your data by using encryption and hashing.
-        </p>
-      </td>
-    </tr>
-  </table>
+:mortar_board: &nbsp; **[React.js Training Program](http://www.reactjsprogram.com/?asdf=36750_q0pu0tfa)** by Tyler McGinnis<br>
+:mortar_board: &nbsp; **[React for Beginners](https://reactforbeginners.com/friend/konstantin)** and **[ES6 Training Course](https://es6.io/friend/konstantin)** by Wes Bos<br>
+:green_book: &nbsp; **[React: Up & Running: Building Web Applications](http://amzn.to/2bBkZs1)** by Stoyan Stefanov (Aug, 2016)<br>
+:green_book: &nbsp; **[Getting Started with React](http://amzn.to/2beVRI9)** by Doel Sengupta and Manu Singhal (Apr, 2016)<br>
+:green_book: &nbsp; **[You Don't Know JS: ES6 & Beyond](http://amzn.to/2bFzlqe)** by Kyle Simpson (Dec, 2015)<br>
+:green_book: &nbsp; **[C# 6 and .NET Core 1.0: Modern Cross-Platform Development](http://amzn.to/2beV5uS)** by Mark J. Price (Mar, 2016)<br>
+:green_book: &nbsp; **[Professional C# 6 and .NET Core 1.0](http://amzn.to/2bhILsn)** by Christian Nagel (Apr, 2016)<br>
 
 
 ### Related Projects
 
+* [React App SDK](https://github.com/kriasoft/react-app) — build React applications with a single dev dependency and no build configuration
 * [React Starter Kit](https://github.com/kriasoft/react-starter-kit) — Isomorphic web app boilerplate (Node.js, Express, GraphQL, React)
 * [Babel Starter Kit](https://github.com/kriasoft/babel-starter-kit) — JavaScript library boilerplate (ES2015+, Babel, Rollup)
 * [ASP.NET Core Starter Kit `|>` F#](https://github.com/kriasoft/fsharp-starter-kit) — Web app boilerplate (F#, .NET Core, Kestrel, GraphQL, React)
@@ -193,11 +176,12 @@ requests](CONTRIBUTING.md#pull-requests).
 
 * [#aspnet-starter-kit](https://gitter.im/kriasoft/aspnet-starter-kit) on Gitter
 * [@koistya](https://twitter.com/koistya) on [Codementor](https://www.codementor.io/koistya)
+  or [Skype](http://hatscripts.com/addskype?koistya)
 
 
 ### License
 
-Copyright © 2014-2016 [Kriasoft](https://kriasoft.com). This source code is licensed under the MIT
+Copyright © 2014-present [Kriasoft](https://kriasoft.com). This source code is licensed under the MIT
 license found in the [LICENSE.txt](https://github.com/kriasoft/react-starter-kit/blob/master/LICENSE.txt)
 file. The documentation to the project is licensed under the [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/)
 license.

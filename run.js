@@ -7,7 +7,7 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-/* eslint-disable no-console */
+/* eslint-disable global-require, no-console, import/newline-after-import */
 
 const fs = require('fs');
 const del = require('del');
@@ -18,8 +18,6 @@ const webpack = require('webpack');
 const cp = require('child_process');
 
 const tasks = new Map();
-const webpackConfig = require('./webpack.config');
-const isDebug = !(process.argv.includes('--release') || process.argv.includes('-r'));
 
 function run(task) {
   const start = new Date();
@@ -33,26 +31,29 @@ function run(task) {
 // Clean up the output directory
 // -----------------------------------------------------------------------------
 tasks.set('clean', () => Promise.resolve()
-  .then(() => del(['build/*', 'public/assets/*', '!build/.git'], { dot: true }))
+  .then(() => del(['build/*', 'public/dist/*', '!build/.git'], { dot: true }))
   .then(() => {
-    mkdirp.sync('build/public/assets');
-    mkdirp.sync('public/assets');
+    mkdirp.sync('build/public/dist');
+    mkdirp.sync('public/dist');
   })
 );
 
 //
-// Compile client-side source code into a distributable format
+// Bundle JavaScript, CSS and image files with Webpack
 // -----------------------------------------------------------------------------
-tasks.set('bundle', () => new Promise((resolve, reject) => {
-  webpack(webpackConfig).run((err, stats) => {
-    if (err) {
-      reject(err);
-    } else {
-      console.log(stats.toString(webpackConfig.stats));
-      resolve();
-    }
+tasks.set('bundle', () => {
+  const webpackConfig = require('./webpack.config');
+  return new Promise((resolve, reject) => {
+    webpack(webpackConfig).run((err, stats) => {
+      if (err) {
+        reject(err);
+      } else {
+        console.log(stats.toString(webpackConfig.stats));
+        resolve();
+      }
+    });
   });
-}));
+});
 
 //
 // Copy static files into the output folder
@@ -80,30 +81,33 @@ tasks.set('appsettings', () => new Promise(resolve => {
 //
 // Copy static files into the output folder
 // -----------------------------------------------------------------------------
-tasks.set('build', () => Promise.resolve()
-  .then(() => run('clean'))
-  .then(() => run('bundle'))
-  .then(() => run('copy'))
-  .then(() => run('appsettings'))
-  .then(() => new Promise((resolve, reject) => {
-    const options = { stdio: ['ignore', 'inherit', 'inherit'] };
-    const config = isDebug ? 'Debug' : 'Release';
-    const args = ['publish', 'server', '-o', 'build', '-c', config, '-r', 'coreclr'];
-    cp.spawn('dotnet', args, options).on('close', code => {
-      if (code === 0) {
-        resolve();
-      } else {
-        reject(new Error(`dotnet ${args.join(' ')} => ${code} (error)`));
-      }
-    });
-  }))
-);
+tasks.set('build', () => {
+  global.DEBUG = process.argv.includes('--debug') || false;
+  return Promise.resolve()
+    .then(() => run('clean'))
+    .then(() => run('bundle'))
+    .then(() => run('copy'))
+    .then(() => run('appsettings'))
+    .then(() => new Promise((resolve, reject) => {
+      const options = { stdio: ['ignore', 'inherit', 'inherit'] };
+      const config = global.DEBUG ? 'Debug' : 'Release';
+      const args = ['publish', 'server', '-o', 'build', '-c', config, '-r', 'coreclr'];
+      cp.spawn('dotnet', args, options).on('close', code => {
+        if (code === 0) {
+          resolve();
+        } else {
+          reject(new Error(`dotnet ${args.join(' ')} => ${code} (error)`));
+        }
+      });
+    }));
+});
 
 
 //
 // Build and publish web application to Azure Web Apps
 // -----------------------------------------------------------------------------
 tasks.set('publish', () => {
+  global.DEBUG = process.argv.includes('--debug') || false;
   const remote = {
     name: 'azure',
     url: 'https://<user>@<app>.scm.azurewebsites.net:443/<app>.git', // TODO: Update deployment URL
@@ -138,42 +142,57 @@ tasks.set('publish', () => {
     .then(() => git('add', '.', '--all'))
     .then(() => git('commit', '--message', new Date().toUTCString())
       .catch(() => Promise.resolve()))
-    .then(() => git('push', 'origin', 'master', '--force', '--set-upstream'));
+    .then(() => git('push', remote.name, 'master', '--force', '--set-upstream'));
 });
 
 //
-// Build website and start watching for modifications
+// Build website and launch it in a browser for testing in watch mode
 // -----------------------------------------------------------------------------
-tasks.set('start', () => Promise.resolve()
-  .then(() => run('clean'))
-  .then(() => run('appsettings'))
-  .then(() => new Promise((resolve, reject) => {
-    const compiler = webpack(webpackConfig);
-    compiler.watch({}, (err, stats) => {
-      if (err) {
-        reject(err);
-      } else {
-        console.log(stats.toString(webpackConfig.stats));
-        resolve();
-      }
-    });
-  }))
-  .then(() => new Promise(resolve => {
-    const options = {
-      cwd: path.resolve(__dirname, './server/'),
-      stdio: ['ignore', 'pipe', 'inherit'],
-      env: {
-        ASPNETCORE_ENVIRONMENT: 'Development',
-      },
-    };
-    cp.spawn('dotnet', ['watch', 'run'], options).stdout.on('data', data => {
-      process.stdout.write(data);
-      if (data.indexOf('Application started.') !== -1) {
-        resolve();
-      }
-    });
-  }))
-);
+tasks.set('start', () => {
+  global.HMR = !process.argv.includes('--no-hmr'); // Hot Module Replacement (HMR)
+  return Promise.resolve()
+    .then(() => run('clean'))
+    .then(() => run('appsettings'))
+    .then(() => new Promise(resolve => {
+      let count = 0;
+      const webpackConfig = require('./webpack.config');
+      const compiler = webpack(webpackConfig);
+      // Node.js middleware that compiles application in watch mode with HMR support
+      // http://webpack.github.io/docs/webpack-dev-middleware.html
+      const webpackDevMiddleware = require('webpack-dev-middleware')(compiler, {
+        publicPath: webpackConfig.output.publicPath,
+        stats: webpackConfig.stats,
+      });
+      compiler.plugin('done', () => {
+        // Launch ASP.NET Core server after the initial bundling is complete
+        if (++count === 1) {
+          const options = {
+            cwd: path.resolve(__dirname, './server/'),
+            stdio: ['ignore', 'pipe', 'inherit'],
+            env: Object.assign({}, process.env, {
+              ASPNETCORE_ENVIRONMENT: 'Development',
+            }),
+          };
+          cp.spawn('dotnet', ['watch', 'run'], options).stdout.on('data', data => {
+            process.stdout.write(data);
+            if (data.indexOf('Application started.') !== -1) {
+              // Launch Browsersync after the initial bundling is complete
+              // For more information visit https://browsersync.io/docs/options
+              require('browser-sync').create().init({
+                proxy: {
+                  target: 'localhost:5000',
+                  middleware: [
+                    webpackDevMiddleware,
+                    require('webpack-hot-middleware')(compiler),
+                  ],
+                },
+              }, resolve);
+            }
+          });
+        }
+      });
+    }));
+});
 
 // Execute the specified task or default one. E.g.: node run build
-run(process.argv[2] || 'start');
+run(/^\w/.test(process.argv[2] || '') ? process.argv[2] : 'start' /* default */);

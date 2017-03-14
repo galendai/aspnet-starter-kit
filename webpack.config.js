@@ -12,27 +12,37 @@
 const path = require('path');
 const webpack = require('webpack');
 const AssetsPlugin = require('assets-webpack-plugin');
+const pkg = require('./package.json');
 
-const isDebug = !(process.argv.includes('--release') || process.argv.includes('-r'));
+const isDebug = global.DEBUG === false ? false : !process.argv.includes('--release');
 const isVerbose = process.argv.includes('--verbose') || process.argv.includes('-v');
+const useHMR = !!global.HMR; // Hot Module Replacement (HMR)
+const babelConfig = Object.assign({}, pkg.babel, {
+  babelrc: false,
+  cacheDirectory: useHMR,
+});
 
-// Webpack configuration (client/main.js => public/assets/main.<hash>.js)
+// Webpack configuration (client/main.js => public/dist/main.{hash}.js)
 // http://webpack.github.io/docs/configuration.html
 const config = {
 
   // The base directory for resolving the entry option
-  context: __dirname,
+  context: path.resolve(__dirname, './client'),
 
   // The entry point for the bundle
   entry: [
-    './client/main.js',
+    /* Material Design Lite (https://getmdl.io) */
+    '!!style!css!react-mdl/extra/material.min.css',
+    'react-mdl/extra/material.min.js',
+    /* The main entry point of your JavaScript application */
+    './main.js',
   ],
 
   // Options affecting the output of the compilation
   output: {
-    path: path.resolve(__dirname, './public/assets/'),
-    publicPath: '/assets/',
-    filename: isDebug ? '[name].js?[chunkhash]' : '[name].[chunkhash].js',
+    path: path.resolve(__dirname, './public/dist'),
+    publicPath: '/dist/',
+    filename: isDebug ? '[name].js?[hash]' : '[name].[hash].js',
     chunkFilename: isDebug ? '[id].js?[chunkhash]' : '[id].[chunkhash].js',
     sourcePrefix: '  ',
   },
@@ -67,7 +77,7 @@ const config = {
     // Emit a JSON file with assets paths
     // https://github.com/sporto/assets-webpack-plugin#options
     new AssetsPlugin({
-      path: path.resolve(__dirname, './public/assets'),
+      path: path.resolve(__dirname, './public/dist'),
       filename: 'assets.json',
       prettyPrint: true,
     }),
@@ -81,7 +91,7 @@ const config = {
         include: [
           path.resolve(__dirname, './client'),
         ],
-        loader: 'babel-loader',
+        loader: `babel-loader?${JSON.stringify(babelConfig)}`,
       },
       {
         test: /\.css/,
@@ -100,18 +110,31 @@ const config = {
       },
       {
         test: /\.json$/,
+        exclude: [
+          path.resolve(__dirname, './client/routes.json'),
+        ],
         loader: 'json-loader',
+      },
+      {
+        test: /\.json$/,
+        include: [
+          path.resolve(__dirname, './client/routes.json'),
+        ],
+        loaders: [
+          `babel-loader?${JSON.stringify(babelConfig)}`,
+          path.resolve(__dirname, './client/utils/routes-loader.js'),
+        ],
       },
       {
         test: /\.md$/,
         loader: path.resolve(__dirname, './client/utils/markdown-loader.js'),
       },
       {
-        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
+        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)(\?.*)$/,
         loader: 'url-loader?limit=10000',
       },
       {
-        test: /\.(eot|ttf|wav|mp3)$/,
+        test: /\.(eot|ttf|wav|mp3)(\?.*)$/,
         loader: 'file-loader',
       },
     ],
@@ -165,11 +188,24 @@ const config = {
 
 };
 
+// Integrate Webpack 2.x (disable ES2015 modules)
+babelConfig.presets[babelConfig.presets.indexOf('latest')] = ['latest', {
+  es2015: { modules: false },
+}];
+
 // Optimize the bundle in release (production) mode
 if (!isDebug) {
   config.plugins.push(new webpack.optimize.DedupePlugin());
   config.plugins.push(new webpack.optimize.UglifyJsPlugin({ compress: { warnings: isVerbose } }));
   config.plugins.push(new webpack.optimize.AggressiveMergingPlugin());
+}
+
+// Hot Module Replacement (HMR) + React Hot Reload
+if (isDebug && useHMR) {
+  babelConfig.plugins.unshift('react-hot-loader/babel');
+  config.entry.unshift('react-hot-loader/patch', 'webpack-hot-middleware/client');
+  config.plugins.push(new webpack.HotModuleReplacementPlugin());
+  config.plugins.push(new webpack.NoErrorsPlugin());
 }
 
 module.exports = config;

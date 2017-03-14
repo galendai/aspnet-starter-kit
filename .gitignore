@@ -5,9 +5,9 @@
 build
 bin/
 obj/
-public/assets
+public/dist
 
-# Node.js, NPM
+# Node.js and NPM
 node_modules
 npm-debug.log
 
